@@ -11,6 +11,7 @@
   "openblas",
   "opencv",
   "open-mpi",
+  "pytorch",
   "qt",
   "spidermonkey",
   "vc",
