@@ -22,7 +22,7 @@ class OpenaiWhisper < Formula
   depends_on "rust" => :build # for tiktoken
   depends_on "certifi"
   depends_on "ffmpeg"
-  depends_on "llvm@15" # Issue for newer LLVM: https://github.com/numba/llvmlite/issues/1048
+  depends_on "llvm@16" # LLVM 17 PR: https://github.com/numba/llvmlite/pull/1042
   depends_on "numpy"
   depends_on "python@3.12"
   depends_on "pytorch"
@@ -44,7 +44,7 @@ class OpenaiWhisper < Formula
   resource "llvmlite" do
     # Fetch from Git hash for compatibility with the new version of `numba` below.
     url "https://github.com/numba/llvmlite/archive/ca123c3ae2a6f7db865661ae509862277ec5d692.tar.gz"
-    sha256 "a778c3b02f96a57a8c4c2e22cb7b2b0712cf487ac5167d459150e1b1fc42b028"
+    sha256 "02a5ea9b8d1d63f7b882ffd9a7777261888b768008e8c38eab0a97437cbe8d01"
   end
 
   resource "more-itertools" do
@@ -55,7 +55,7 @@ class OpenaiWhisper < Formula
   resource "numba" do
     # Fetch from Git hash for numpy 2.1 compatibility
     url "https://github.com/numba/numba/archive/a344e8f55440c91d40c5221e93a38ce0c149b803.tar.gz"
-    sha256 "6295d40e7f2f29dfe06a0403e6e7540f7d286df238085d61637740017acb11ee"
+    sha256 "0d161a76aea754b7713953b3d713d1fc68659383078054adee9c955b855c7ef3"
   end
 
   resource "regex" do
@@ -88,12 +88,13 @@ class OpenaiWhisper < Formula
     venv = virtualenv_create(libexec, python3)
 
     # We depend on pytorch, but that's a separate formula, so install a `.pth` file to link them.
-    # This needs to happen _before_ we try to install torchvision.
+    # This needs to happen _before_ we try to install openai-whisper.
+    # NOTE: This is an exception to our usual policy as building `pytorch` is complicated
     site_packages = Language::Python.site_packages(python3)
-    pytorch = Formula["pytorch"].opt_libexec
-    (venv.site_packages/"homebrew-pytorch.pth").write pytorch/site_packages
+    pth_contents = "import site; site.addsitedir('#{Formula["pytorch"].opt_libexec/site_packages}')\n"
+    (venv.site_packages/"homebrew-pytorch.pth").write pth_contents
 
-    ENV["LLVM_CONFIG"] = Formula["llvm@15"].opt_bin/"llvm-config"
+    ENV["LLVM_CONFIG"] = Formula["llvm@16"].opt_bin/"llvm-config"
     venv.pip_install resources.reject { |r| r.name == "numba" }
     venv.pip_install(resource("numba"), build_isolation: false)
     venv.pip_install_and_link buildpath
