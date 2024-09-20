@@ -1,8 +1,8 @@
 class Rustfmt < Formula
   desc "Format Rust code"
   homepage "https://rust-lang.github.io/rustfmt/"
-  url "https://github.com/rust-lang/rustfmt/archive/refs/tags/v1.7.0.tar.gz"
-  sha256 "9f228d6192104a57efd73b20b8f0a2189c920373655b0c17b75758afab805be8"
+  url "https://github.com/rust-lang/rustfmt/archive/refs/tags/v1.8.0.tar.gz"
+  sha256 "d23bc8bfba28685fd68cf207dde62d0868ae0e4378d438d58b4b51763e6b92f5"
   license any_of: ["MIT", "Apache-2.0"]
   head "https://github.com/rust-lang/rustfmt.git", branch: "master"
 
@@ -28,10 +28,10 @@ class Rustfmt < Formula
 
     # Bundle the shared libraries used by the executables.
     # https://github.com/NixOS/nixpkgs/blob/6cee3b5893090b0f5f0a06b4cf42ca4e60e5d222/pkgs/development/compilers/rust/rustfmt.nix#L18-L27
-    bundled_dylibs = %w[librustc_driver libstd]
-    bundled_dylibs << "libLLVM" if OS.linux?
+    bundled_dylibs = %w[rustc_driver- std-]
+    bundled_dylibs << "LLVM" if OS.linux?
     bundled_dylibs.each do |libname|
-      dylib = buildpath.glob(".brew_home/.rustup/toolchains/*/lib/#{shared_library("#{libname}-*")}")
+      dylib = buildpath.glob(".brew_home/.rustup/toolchains/*/lib/#{shared_library("lib#{libname}*", "*")}")
       libexec.install dylib
     end
 
