@@ -3,8 +3,8 @@ require "language/node"
 class Spruce < Formula
   desc "World Class, Open Source, Test tools for Typescript and Visual Studio Code!"
   homepage "https://cli.spruce.bot"
-  url "https://registry.npmjs.org/@sprucelabs/spruce-cli/-/spruce-cli-22.0.1.tgz"
-  sha256 "8136e43f031399c3b0d75dc6812ac7c7de6a9ba51e483517b8b35cc6fe3e16cb"
+  url "https://registry.npmjs.org/@sprucelabs/spruce-cli/-/spruce-cli-22.1.3.tgz"
+  sha256 "6bf80e1ffe6627e0989726e1050353bf7879817e318017d0322c145a315c8e00"
   license "BSD-2-Clause"
 
   depends_on "node"
