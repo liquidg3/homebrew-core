@@ -4,7 +4,7 @@ class Spruce < Formula
   desc "World Class, Open Source, Test tools for Typescript and Visual Studio Code!"
   homepage "https://cli.spruce.bot"
   url "https://registry.npmjs.org/@sprucelabs/spruce-cli/-/spruce-cli-22.1.3.tgz"
-  sha256 "6bf80e1ffe6627e0989726e1050353bf7879817e318017d0322c145a315c8e00"
+  sha256 "d575942a5e160f2fdae24df10534c1ebb06ede344eb5c4a8d393af3bf1a2af87"
   license "BSD-2-Clause"
 
   depends_on "node"
