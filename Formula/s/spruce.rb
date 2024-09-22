@@ -10,6 +10,11 @@ class Spruce < Formula
   depends_on "node"
   depends_on "yarn"
 
+  on_linux do
+    depends_on "libx11"
+    depends_on "musl"
+  end
+
   def install
     system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
@@ -18,7 +23,7 @@ class Spruce < Formula
   test do
     Dir.chdir(testpath) do
       # Run the spruce command
-      system bin/"spruce", "create.module", "testing", "--name", "taco", "--description", "coming soon"
+      system bin/"spruce", "create.module", "testing", "--name", "taco", "--description", "coming-soon"
 
       # Check if the "testing" directory exists
       assert_predicate testpath/"testing", :directory?, "The 'testing' directory was not created"
